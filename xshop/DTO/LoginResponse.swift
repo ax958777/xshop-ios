@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct LoginResponse:Codable{
+    let message: String?
+    let token: String?
+    let isSuccess: Bool
+    
+    enum CodingKeys:String,CodingKey{
+        case message,token,isSuccess
+    }
+}

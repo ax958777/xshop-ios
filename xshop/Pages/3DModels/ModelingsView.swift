@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct ModelingsView: View {
+    @StateObject private var vm=ModelingsViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            HeaderView()
+            CategoryFilterView(selectedCategory: $vm.selectedCategory)
+            ScrollView{
+                LazyVStack{
+                    ForEach(vm.filterModelings()){ modeling in
+                        ModelingCard(modeling:modeling)
+                    }
+                }
+                .padding()
+            }
+            
+        }
     }
 }
 

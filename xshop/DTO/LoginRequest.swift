@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct LoginRequest:Codable{
+    let email,password:String
+    enum CodingKeys:String,CodingKey{
+        case email,password
+    }
+}

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LoginResponse:Codable{
+struct RegisterResponse:Codable{
     let message: String?
     let token: String?
     let isSuccess: Bool

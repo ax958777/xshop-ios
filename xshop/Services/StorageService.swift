@@ -29,10 +29,6 @@ class StorageService{
             if let token = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSString.self, from: data)  {
                 return token as String
             }
-    
-            if let token = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? String {
-                return token
-            }
         } catch {
             print("Retrieve Token Error.")
         }

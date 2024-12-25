@@ -5,7 +5,7 @@
 //  Created by AlexX on 2024-12-25.
 //
 
-enum ProductCategory:String, CaseIterable{
+enum ModelingCategory:String, CaseIterable{
     case construction="Construction"
     case machine="Machine"
     case products="Products"

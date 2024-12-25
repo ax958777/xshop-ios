@@ -6,3 +6,7 @@
 //
 
 import Foundation
+struct AppConfig{
+    //static var apiUrl="https://xshop.somee.com/api/"
+    static var apiUrl="http://localhost:5064/api/"
+}

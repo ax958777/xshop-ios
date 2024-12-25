@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct NavbarView: View {
-    @StateObject private var viewModel = NavbarViewModel()
+    @StateObject private var viewModel = NavbarViewModel.shared
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 0) {
             // Main Navbar
             HStack {
                 // Hamburger Menu Button
@@ -25,7 +25,7 @@ struct NavbarView: View {
                 Spacer()
                 
                 // Title
-                Text("My App")
+                Text("X Shop")
                     .font(.headline)
                 
                 Spacer()
@@ -40,38 +40,50 @@ struct NavbarView: View {
             }
             .frame(height: 60)
             .background(Color(.systemBackground))
-            .shadow(radius: 2)
+            .zIndex(2) // Ensure navbar stays on top
             
-            // Side Menu
-            if viewModel.isMenuOpen {
-                SideMenuView(viewModel: viewModel)
-                    .transition(.move(edge: .leading))
-            }
-            
-            // User Menu
+            // User Menu (positioned directly under navbar)
             if viewModel.isUserMenuOpen {
                 UserMenuView(isOpen: $viewModel.isUserMenuOpen, userName: viewModel.userName)
-                    .transition(.move(edge: .trailing))
+                    .transition(.move(edge: .top))
+                    .zIndex(1)
             }
         }
+        .overlay(
+            Group {
+                // Side Menu
+                if viewModel.isMenuOpen {
+                    SideMenuView(viewModel: viewModel)
+                         .transition(.move(edge: .leading))
+                        .zIndex(3) // Highest z-index to overlay everything
+                }
+            }
+        )
     }
 }
+
 
 // SideMenuView.swift
 struct SideMenuView: View {
     @ObservedObject var viewModel: NavbarViewModel
     
     var body: some View {
+        
         GeometryReader { geometry in
             HStack {
                 VStack(alignment: .leading, spacing: 20) {
-                    Button(action: { viewModel.toggleMenu() }) {
-                        Image(systemName: "xmark")
-                            .font(.title2)
-                            .foregroundColor(.primary)
-                            .padding()
+                    VStack(alignment: .trailing, spacing: 20) {
+                        
+                        HStack {
+                            Spacer()
+                            Button(action: { viewModel.toggleMenu() }) {
+                                Image(systemName: "xmark")
+                                    .font(.title2)
+                                    .foregroundColor(.primary)
+                                    .padding()
+                            }
+                        }
                     }
-                    
                     MenuLink(icon: "house", title: "Home") {
                         viewModel.handleMenuAction(.home)
                     }
@@ -90,15 +102,13 @@ struct SideMenuView: View {
                     
                     Spacer()
                 }
-                .frame(width: geometry.size.width * 0.75)
+                .frame(width: geometry.size.width * 0.75,height:UIScreen.main.bounds.height)
                 .background(Color(.systemBackground))
                 .shadow(radius: 5)
                 
                 Spacer()
             }
         }
-        .background(Color.black.opacity(0.3))
-        .edgesIgnoringSafeArea(.all)
         .onTapGesture {
             viewModel.toggleMenu()
         }
@@ -112,42 +122,45 @@ struct UserMenuView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack(alignment: .trailing) {
-                VStack(alignment: .leading, spacing: 15) {
-                    HStack {
-                        Text(userName)
-                            .font(.headline)
-                        Spacer()
-                        Button(action: { isOpen.toggle() }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.primary)
+            HStack {
+                Spacer()
+                VStack(alignment: .trailing) {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text(userName)
+                                .font(.headline)
+                            Spacer()
+                            Button(action: { isOpen.toggle() }) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Button(action: {}) {
+                            Label("View Profile", systemImage: "person")
+                        }
+                        
+                        Button(action: {}) {
+                            Label("Settings", systemImage: "gear")
+                        }
+                        
+                        Button(action: {}) {
+                            Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
+                                .foregroundColor(.red)
                         }
                     }
+                    .padding()
+                    .background(Color(.systemBackground))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    .frame(width: 200)
+                    .offset(y: -10)
+                    .padding()
                     
-                    Divider()
-                    
-                    Button(action: {}) {
-                        Label("View Profile", systemImage: "person")
-                    }
-                    
-                    Button(action: {}) {
-                        Label("Settings", systemImage: "gear")
-                    }
-                    
-                    Button(action: {}) {
-                        Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
-                            .foregroundColor(.red)
-                    }
+                    Spacer()
                 }
-                .padding()
-                .background(Color(.systemBackground))
-                .cornerRadius(10)
-                .shadow(radius: 5)
-                .frame(width: 200)
-                .offset(y: 60)
-                .padding()
-                
-                Spacer()
             }
         }
         .background(Color.clear)

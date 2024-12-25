@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct LoginRequest:Codable{
-    let email,password:String
+struct RegisterRequest:Codable{
+    let email,name,password:String
     enum CodingKeys:String,CodingKey{
-        case email,password
+        case email,name,password
     }
 }

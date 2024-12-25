@@ -9,7 +9,13 @@ import SwiftUI
 
 struct HeaderView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            Text("3D Models")
+                .font(.title)
+                .foregroundColor(.white)
+            .padding()
+        }
+        .frame(height:60)
     }
 }
 

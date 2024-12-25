@@ -12,6 +12,9 @@ class NavbarViewModel: ObservableObject {
     @Published var isMenuOpen = false
     @Published var isUserMenuOpen = false
     @Published var userName = "John Doe"
+    @Published var selectedMenu : MenuAction = .home
+    
+    static let shared=NavbarViewModel()
     
     func toggleMenu() {
         withAnimation {
@@ -32,6 +35,7 @@ class NavbarViewModel: ObservableObject {
         // Handle different menu actions
         switch action {
             case .home:
+                self.selectedMenu = .home
                 print("Navigating to Home")
             case .profile:
                 print("Navigating to Profile")

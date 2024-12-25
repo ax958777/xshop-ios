@@ -12,7 +12,8 @@ struct ContentView: View {
     var body: some View {
         Group{
             if vm.isLoggedIn{
-                TabView()
+                XshopTabView()
+                //HomeView()
             }else{
                 LoginView()
             }
